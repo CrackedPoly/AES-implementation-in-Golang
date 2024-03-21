@@ -1,6 +1,7 @@
 package aes
 
 import (
+  "fmt"
 	"encoding/binary"
 	"errors"
 	"github.com/CrackedPoly/AES-implementation-in-Golang/src/utils"
@@ -120,7 +121,7 @@ func (a *AES) keyExpansion() []uint32 {
 		w = append(w, w[i-a.nk]^binary.BigEndian.Uint32(tempW))
 	}
 	// mute debugging
-	//utils.DumpWords("keyExpansion:", w)
+	utils.DumpWords("keyExpansion:", w)
 	return w
 }
 
@@ -132,8 +133,8 @@ func (a *AES) EncryptECB(in []byte, pad utils.PaddingFunc) []byte {
 		a.encryptBlock(in[i:i+a.len], a.roundKeys)
 	}
 
-	//fmt.Printf("aes_impl-%d ECB encrypted cipher:", a.nk*32)
-	//utils.DumpBytes("", in)
+	fmt.Printf("aes_impl-%d ECB encrypted cipher:", a.nk*32)
+	utils.DumpBytes("", in)
 	return in
 }
 
@@ -144,8 +145,8 @@ func (a *AES) DecryptECB(in []byte, unpad utils.UnpaddingFunc) []byte {
 	}
 
 	in = unpad(in)
-	//fmt.Printf("aes_impl-%d ECB decrypted plaintext:", a.nk*32)
-	//utils.DumpBytes("", in)
+	fmt.Printf("aes_impl-%d ECB decrypted plaintext:", a.nk*32)
+	utils.DumpBytes("", in)
 	return in
 }
 
@@ -162,8 +163,8 @@ func (a *AES) EncryptCBC(in []byte, iv []byte, pad utils.PaddingFunc) []byte {
 		copy(ivTmp, in[i:i+a.len])
 	}
 
-	//fmt.Printf("aes_impl-%d CBC encrypted cipher:", a.nk*32)
-	//utils.DumpBytes("", in)
+	fmt.Printf("aes_impl-%d CBC encrypted cipher:", a.nk*32)
+	utils.DumpBytes("", in)
 	return in
 }
 
@@ -182,8 +183,8 @@ func (a *AES) DecryptCBC(in []byte, iv []byte, unpad utils.UnpaddingFunc) []byte
 	}
 
 	in = unpad(in)
-	//fmt.Printf("aes_impl-%d CBC decrypted plaintext:", a.nk*32)
-	//utils.DumpBytes("", in)
+	fmt.Printf("aes_impl-%d CBC decrypted plaintext:", a.nk*32)
+	utils.DumpBytes("", in)
 	return in
 }
 
@@ -205,8 +206,8 @@ func (a *AES) EncryptCFB(in []byte, iv []byte, s int) []byte {
 	a.encryptBlock(ivTmp, a.roundKeys)
 	Xor(plainTmp[i:], ivTmp[0:s]) // process on the last bytes (less than s)
 
-	//fmt.Printf("aes_impl-%d CFB with %d-bytes shift encrypted cipher:", a.nk*32, s)
-	//utils.DumpBytes("", plainTmp)
+	fmt.Printf("aes_impl-%d CFB with %d-bytes shift encrypted cipher:", a.nk*32, s)
+	utils.DumpBytes("", plainTmp)
 	return plainTmp
 }
 
@@ -228,8 +229,8 @@ func (a *AES) DecryptCFB(in []byte, iv []byte, s int) []byte {
 	a.encryptBlock(ivTmp, a.roundKeys)
 	Xor(in[i:], ivTmp[0:s])
 
-	//fmt.Printf("aes_impl-%d CFB with %d-bytes shift decrypted plaintext:", a.nk*32, s)
-	//utils.DumpBytes("", in)
+	fmt.Printf("aes_impl-%d CFB with %d-bytes shift decrypted plaintext:", a.nk*32, s)
+	utils.DumpBytes("", in)
 	return in
 }
 
@@ -249,8 +250,8 @@ func (a *AES) EncryptOFB(in []byte, iv []byte) []byte {
 	a.encryptBlock(ivTmp, a.roundKeys)
 	Xor(plainTmp[i:], ivTmp)
 
-	//fmt.Printf("aes_impl-%d OFB encrypted cipher:", a.nk*32)
-	//utils.DumpBytes("", plainTmp)
+	fmt.Printf("aes_impl-%d OFB encrypted cipher:", a.nk*32)
+	utils.DumpBytes("", plainTmp)
 	return plainTmp
 }
 
@@ -270,8 +271,8 @@ func (a *AES) DecryptOFB(in []byte, iv []byte) []byte {
 	a.encryptBlock(ivTmp, a.roundKeys)
 	Xor(cipherTmp[i:], ivTmp)
 
-	//fmt.Printf("aes_impl-%d OFB decrypted plaintext:", a.nk*32)
-	//utils.DumpBytes("", cipherTmp)
+	fmt.Printf("aes_impl-%d OFB decrypted plaintext:", a.nk*32)
+	utils.DumpBytes("", cipherTmp)
 	return cipherTmp
 }
 
@@ -294,8 +295,8 @@ func (a *AES) EncryptCTR(in []byte, iv []byte) []byte {
 	a.encryptBlock(ivTmp, a.roundKeys)
 	Xor(plainTmp[i:], ivTmp)
 
-	//fmt.Printf("aes_impl-%d CTR encrypted ciphertext:", a.nk*32)
-	//utils.DumpBytes("", plainTmp)
+	fmt.Printf("aes_impl-%d CTR encrypted ciphertext:", a.nk*32)
+	utils.DumpBytes("", plainTmp)
 	return plainTmp
 }
 
@@ -319,8 +320,8 @@ func (a *AES) DecryptCTR(in []byte, iv []byte) []byte {
 	a.encryptBlock(ivTmp, a.roundKeys)
 	Xor(cipherTmp[i:], ivTmp)
 
-	//fmt.Printf("aes_impl-%d CTR decrypted ciphertext:", a.nk*32)
-	//utils.DumpBytes("", cipherTmp)
+	fmt.Printf("aes_impl-%d CTR decrypted ciphertext:", a.nk*32)
+	utils.DumpBytes("", cipherTmp)
 	return cipherTmp
 }
 
@@ -350,9 +351,9 @@ func (a *AES) EncryptGCM(in []byte, iv []byte, auth []byte, tagLen int) ([]byte,
 	big.NewInt(int64(8 * len(cipher))).FillBytes(lenC)
 	S := gHash(append(append(append(append(append(auth, vZeros...), cipher...), uZeros...), lenA...), lenC...), H)
 	T := a.EncryptGCTR(S, J0Tmp)
-	//fmt.Printf("aes_impl-%d GCM encrypted ciphertext:", a.nk*32)
-	//utils.DumpBytes("", cipher)
-	//utils.DumpBytes("tag:", T[:tagLen])
+	fmt.Printf("aes_impl-%d GCM encrypted ciphertext:", a.nk*32)
+	utils.DumpBytes("", cipher)
+	utils.DumpBytes("tag:", T[:tagLen])
 	return cipher, T[:tagLen]
 }
 
@@ -385,12 +386,12 @@ func (a *AES) DecryptGCM(in []byte, iv []byte, auth []byte, tag []byte) []byte {
 	big.NewInt(int64(8 * len(plaintext))).FillBytes(lenC)
 	S := gHash(append(append(append(append(append(auth, vZeros...), ciphertext...), uZeros...), lenA...), lenC...), H)
 	T := a.EncryptGCTR(S, J0Tmp)
-	//fmt.Printf("aes_impl-%d GCM decrypted plaintext:", a.nk*32)
+	fmt.Printf("aes_impl-%d GCM decrypted plaintext:", a.nk*32)
 	if reflect.DeepEqual(T[:len(tag)], tag) {
-		//utils.DumpBytes("", plaintext)
+		utils.DumpBytes("", plaintext)
 		return plaintext
 	}
-	//utils.DumpBytes("\nFailed", nil)
+	utils.DumpBytes("\nFailed", nil)
 	return nil
 }
 

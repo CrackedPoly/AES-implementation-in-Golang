@@ -13,7 +13,7 @@
 All results are the same as [CyberChef](https://github.com/gchq/CyberChef)
 
 ## How To Use
-Open this project in GoLand and build `main.go`.
+Just run `go run main.go`
 
 encrypt
 
@@ -54,14 +54,14 @@ Be specified as 128bit.
 
 ``` 
 NAME:
-   AES encryption and decryption - AES加密与解密
+   AES encryption and decryption - AES Encrypt and Decrypt
 
 USAGE:
    aes_impl [global options] command [command options] [arguments...]
 
 COMMANDS:
-   encrypt  AES加密
-   decrypt  AES解密
+   encrypt  AES Encrypt
+   decrypt  AES Decrypt
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:

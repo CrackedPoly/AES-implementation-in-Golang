@@ -11,52 +11,52 @@ import (
 func main() {
 	var app = &cli.App{
 		Name:                 "AES encryption and decryption",
-		Usage:                "AES加密与解密",
+		Usage:                "encrypt / decrypt",
 		EnableBashCompletion: true,
 		Commands: cli.Commands{
 			{
 				Name:   "encrypt",
-				Usage:  "AES加密",
+				Usage:  "AES Encrypt",
 				Action: action.EncryptAction,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "mode",
-						Usage:    "指定加密的操作模式，有ECB、CBC、CFB、OFB、CTR、GCM六种",
+            Usage:    "specify encryption mode: ECB, CBC, CFB, OFB, CTR, GCM",
 						Aliases:  []string{"m"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "plainfile",
-						Usage:    "指定明文件的位置和名称",
+						Usage:    "path to plain text file",
 						Aliases:  []string{"p"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "keyfile",
-						Usage:    "指定密钥文件的位置和名称",
+						Usage:    "path to key file",
 						Aliases:  []string{"k"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:    "vifile",
-						Usage:   "指定初始化向量文件的位置和名称",
+						Usage:   "path to initial vector file",
 						Aliases: []string{"v"},
 					},
 					&cli.StringFlag{
 						Name:     "cipherfile",
-						Usage:    "指定密文文件的位置和名称",
+						Usage:    "path to save cipher text file",
 						Aliases:  []string{"c"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "authfile",
-						Usage:    "指定GCM模式中鉴别信息文件的位置和名称",
+						Usage:    "path to authentication file in GCM mode",
 						Aliases:  []string{"a"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "tagfile",
-						Usage:    "指定标志文件的位置和名称",
+						Usage:    "path to tag file",
 						Aliases:  []string{"tag"},
 						Required: true,
 					},
@@ -64,48 +64,48 @@ func main() {
 			},
 			{
 				Name:   "decrypt",
-				Usage:  "AES解密",
+				Usage:  "AES Decrypt",
 				Action: action.DecryptAction,
 				Flags: []cli.Flag{
 					&cli.StringFlag{
 						Name:     "mode",
-						Usage:    "指定解密的操作模式，有ECB、CBC、CFB、OFB、CTR、GCM六种",
+            Usage:    "specify decryption mode: ECB, CBC, CFB, OFB, CTR, GCM",
 						Aliases:  []string{"m"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "plainfile",
-						Usage:    "指定明文件的位置和名称",
+						Usage:    "path to plain text file",
 						Aliases:  []string{"p"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "keyfile",
-						Usage:    "指定密钥文件的位置和名称",
+						Usage:    "path to key file",
 						Aliases:  []string{"k"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "vifile",
-						Usage:    "指定初始化向量文件的位置和名称",
+						Usage:    "path to initial vector file",
 						Aliases:  []string{"v"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "cipherfile",
-						Usage:    "指定密文文件的位置和名称",
+						Usage:    "path to save cipher text file",
 						Aliases:  []string{"c"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "authfile",
-						Usage:    "指定GCM模式中鉴别信息文件的位置和名称",
+						Usage:    "path to authentication file in GCM mode",
 						Aliases:  []string{"a"},
 						Required: true,
 					},
 					&cli.StringFlag{
 						Name:     "tagfile",
-						Usage:    "指定标志文件的位置和名称",
+						Usage:    "path to tag file",
 						Aliases:  []string{"tag"},
 						Required: true,
 					},
